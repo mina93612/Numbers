@@ -1,5 +1,7 @@
 package com.example.numbers;
 
+import android.media.Image;
+import android.nfc.Tag;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -8,26 +10,33 @@ import com.google.android.material.snackbar.Snackbar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
-
+  String TAG =MainActivity.class.getSimpleName();
     int counter;
+    int secret = new Random().nextInt(10)+1;
     private TextView number;
-
+    private ImageView result;
     //private TextView button;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Log.d(TAG,"secret"+ secret);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         number = findViewById(R.id.numb);
-
+        result = findViewById(R.id.toolbar);
         //button = findViewById(R.id.zero);
 //        button.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -37,12 +46,23 @@ public class MainActivity extends AppCompatActivity {
 //        });
 
 
-        final FloatingActionButton fab = findViewById(R.id.fab);
+        FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                counter ++;
-                number.setText(String.valueOf(counter));
+                                   @Override
+                                   public void onClick(View view) {
+                                       counter++;
+                                       number.setText(String.valueOf(counter));
+                                       result.setAlpha(1.0f);
+                                       result.setVisibility(View.VISIBLE);
+
+                                       if (counter==secret){
+                                           Toast.makeText(MainActivity.this,"hahaha",Toast.LENGTH_LONG);
+                                           result.setImageResource(R.drawable.shocked);
+                                   }else{
+                                           result.setImageResource(R.drawable.smile);
+                                           result.animate().alpha(0.0f).setDuration(1200);
+                               }
+
 
 
             }
